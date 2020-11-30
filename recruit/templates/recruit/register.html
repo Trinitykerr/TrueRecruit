@@ -5,8 +5,23 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <title>Register</title>
 </head>
+<header style="padding-bottom: 20px">
+ <nav class = "navbar navbar-dark " style="padding-bottom: 20px; background: black;">
+    <a href="{% url 'recruit:home' %}"><h1 class="navbar-brand" style= font-size:3em;">TrueRecruit</h1></a>
+     <div class="navbar">
+                <a href="{% url 'recruit:home' %}" class="nav-item nav-link">Home</a>
+                 <a href="{% url 'recruit:player_list' %}" class="nav-item nav-link">Players</a>
+                 <a href="{% url 'recruit:coach_list' %}" class="nav-item nav-link">Coaches</a>
+                 <a href="#" class="nav-item nav-link">Login</a>
+
+    </div>
+ </nav>
+</header>
 <body>
 <h2>Register</h2>
 <form method="POST">

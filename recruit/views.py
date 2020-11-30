@@ -28,8 +28,12 @@ def registration_view(request):
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             account = authenticate(email=email, password=raw_password)
+            type1 = form.cleaned_data.get("type")
             login(request, account)
-            return redirect('recruit:home')
+            if type1 == 'PLAYER':
+                return redirect('recruit:home')
+            else:
+                return redirect('recruit:player_list')
         else:
             context['registration_form'] = form
     else:
