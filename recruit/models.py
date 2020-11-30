@@ -10,7 +10,7 @@ class MyUserManager(BaseUserManager):
             raise ValueError("Users must have an email address")
         if not username:
             raise ValueError("Users must have a username")
-        user = self.model(
+        user = self.create(
                 email=self.normalize_email(email),
                 username=username,
                 type=type
@@ -22,7 +22,7 @@ class MyUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, username, type, password):
-        user = self.model(
+        user = self.create(
             email=self.normalize_email(email),
             username=username,
             password=password,
@@ -51,7 +51,7 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username' , 'type']
+    REQUIRED_FIELDS = ['username', 'type']
 
     objects = MyUserManager()
 

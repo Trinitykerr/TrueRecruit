@@ -71,7 +71,8 @@ TEMPLATES = [
 AUTH_USER_MODEL = 'recruit.User'
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
+# LOGIN_REDIRECT_URL = 'recruit.home'
+# LOGOUT_REDIRECT_URL = 'recruit.home'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
