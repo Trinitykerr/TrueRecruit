@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User, Contact
 
 
 class RegistrationForm(UserCreationForm):
@@ -11,3 +11,7 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "username", "password1", "password2", "type")
 
 
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'age', 'message']

@@ -1,6 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from recruit.forms import RegistrationForm
+from recruit.forms import RegistrationForm, ContactForm
+from django.core.paginator import Paginator
+from .models import Player, PlayerMore, CoachMore
+from .models import Coach
+from django.template import loader
+from django.contrib import messages
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+import pdfkit
+from django.http import HttpResponse
+# from.forms import ContactForm
 from .models import User
 # Create your views here.
 
@@ -27,6 +37,74 @@ def registration_view(request):
         context['registration_form'] = form
 
     return render(request, 'recruit/register.html', context)
+
+
+def player_list(request):
+    player_object = PlayerMore.objects.all()
+    player_state = request.GET.get('player_state')
+
+    if player_state != '' and player_state is not None:
+        player_object = player_object.filter(state__icontains= player_state)
+
+    paginator = Paginator(player_object, 5)
+    page = request.GET.get('page')
+    player_object = paginator.get_page(page)
+    return render(request, 'recruit/playerlist.html', {'player_object':player_object})
+
+
+def coach_list(request):
+    coach_object = CoachMore.objects.all()
+    coach_state = request.GET.get('coach_state')
+
+    if coach_state != '' and coach_state is not None:
+        coach_object = coach_object.filter(state__icontains= coach_state)
+
+    paginator = Paginator(coach_object, 5)
+    page = request.GET.get('page')
+    coach_object = paginator.get_page(page)
+    return render(request, 'recruit/coachlist.html', {'coach_object':coach_object})
+
+
+class PlayerDetail(DetailView):
+    model = PlayerMore
+    template_name = 'recruit/playerdetail.html'
+
+
+def CoachDetail(request, id):
+    coach = CoachMore.objects.get(pk=id)
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Your message has been sent')
+            return redirect('recruit:coach_list')
+    else:
+        form = ContactForm()
+    context = {
+        'coach':coach,
+        'form':form
+    }
+    return render(request, 'recruit/coachdetail.html', context)
+
+
+def PlayerPrint(request, id):
+    player = PlayerMore.objects.get(pk=id)
+    template = loader.get_template('recruit/print.html')
+    html = template.render({'player': player})
+    filename = 'RecruitPlayer.pdf'
+    html.options = {
+        'title': 'RecruitPlayer',
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+    }
+    config = pdfkit.configuration(wkhtmltopdf='C:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+    pdf = pdfkit.from_string(html, False, configuration=config)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment'
+
+    return response
+
 
 
 

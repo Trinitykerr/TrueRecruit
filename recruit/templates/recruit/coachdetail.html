@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Player Information</title>
+</head>
+<header style="padding-bottom: 20px">
+ <nav class = "navbar navbar-dark " style="padding-bottom: 20px; background: black;">
+    <a href="{% url 'recruit:home' %}"><h1 class="navbar-brand" style= font-size:3em;">TrueRecruit</h1></a>
+     <div class="navbar">
+                <a href="{% url 'recruit:home' %}" class="nav-item nav-link">Home</a>
+                 <a href="{% url 'recruit:player_list' %}" class="nav-item nav-link">Players</a>
+                 <a href="{% url 'recruit:coach_list' %}" class="nav-item nav-link">Coaches</a>
+                 <a href="#" class="nav-item nav-link">Login</a>
+
+    </div>
+ </nav>
+</header>
+<body>
+
+
+ <div class="row">
+            <div class="col-md-2.5 offset-md-1">
+                <img class="card" height="500px" src="{{coach.image}}">
+                <br>
+                Contact Me:
+                <hr>
+                 <form method="POST">
+                    {%csrf_token%}
+                    {{ form.as_p}}
+                    <button type="submit" class = "btn btn-success">Send</button>
+                 </form>
+            </div>
+            <div class="col-md-7 ">
+                <h1>{{coach.name}}</h1>
+                <h4>{{coach.school}}  --- {{ coach.state }}</h4>
+                <h4>{{coach.position}}</h4>
+                <hr>
+                <h6>Email: {{coach.email}}</h6>
+                <h6>Phone: {{coach.phone}}</h6>
+                <hr>
+                <h6>Experience:</h6>
+                {{coach.experience}}
+               <br>
+                <h6>Team Requirements:</h6>
+                {{ coach.requirements }}
+
+
+            </div>
+</div>
+</body>
+</html>
