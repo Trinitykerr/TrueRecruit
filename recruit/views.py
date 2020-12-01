@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from recruit.forms import RegistrationForm, ContactForm
+from recruit.forms import RegistrationForm, ContactForm, CreatePlayer, CreateCoach, LoginForm
 from django.core.paginator import Paginator
 from .models import Player, PlayerMore, CoachMore
 from .models import Coach
@@ -10,6 +10,11 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 import pdfkit
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate, logout
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect, HttpResponse
+from django.views.generic.edit import FormView
 # from.forms import ContactForm
 from .models import User
 # Create your views here.
@@ -31,9 +36,9 @@ def registration_view(request):
             type1 = form.cleaned_data.get("type")
             login(request, account)
             if type1 == 'PLAYER':
-                return redirect('recruit:home')
+                return redirect('recruit:createplayer')
             else:
-                return redirect('recruit:player_list')
+                return redirect('recruit:createcoach')
         else:
             context['registration_form'] = form
     else:
@@ -110,5 +115,69 @@ def PlayerPrint(request, id):
     return response
 
 
+@login_required
+def createplayer(request):
+
+    if request.method == 'POST':
+        form = CreatePlayer(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('name')
+            messages.success(request, f'Welcome {name}! Your profile is created')
+            return redirect('recruit:coach_list')
+
+    else:
+        form = CreatePlayer()
+        return render(request, 'recruit/createplayer.html', {'form':form})
 
 
+@login_required
+def createcoach(request):
+
+    if request.method == 'POST':
+        form = CreateCoach(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('name')
+            messages.success(request, f'Welcome {name}! Your profile is created')
+            return redirect('recruit:player_list')
+
+    else:
+        form = CreateCoach()
+        return render(request, 'recruit/createcoach.html', {'form':form})
+
+
+
+@login_required
+def profilepage(request):
+    return render(request, 'recruit/profile.html')
+
+
+
+def Logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse_lazy('recruit:home'))
+
+
+class LoginView(FormView):
+    """login view"""
+
+    form_class = LoginForm
+    success_url = reverse_lazy('recruit:profile')
+    template_name = 'recruit/login.html'
+
+    def form_valid(self, form):
+        """ process user login"""
+        credentials = form.cleaned_data
+
+        user = authenticate(username=credentials['email'],
+                            password=credentials['password'])
+
+        if user is not None:
+            login(self.request, user)
+            return HttpResponseRedirect(self.success_url)
+
+        else:
+            messages.add_message(self.request, messages.INFO, 'Wrong credentials\
+                                please try again')
+            return HttpResponseRedirect(reverse_lazy('custom_auth:login'))

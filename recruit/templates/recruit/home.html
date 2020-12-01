@@ -12,7 +12,12 @@
 <body>
         <a class="button btn-success" href="{% url 'recruit:player_list' %}">Players</a>
         <a class="button btn-success" href="{% url 'recruit:coach_list' %}">Coaches</a>
-        <a class="button btn-success" >Login</a>
+        {% if user.is_authenticated %}
+             <a class="button btn-success" href="{% url 'recruit:profile' %}">Profile</a>
+             <a class="button btn-success" href="{% url 'recruit:logout' %}">Logout</a>
+        {% else %}
+             <a class="button btn-success" href="{% url 'recruit:login' %}">Login</a>
+        {% endif %}
         <a class="button btn-success" href="{% url 'recruit:register' %}">Create Profile</a>
 </body>
 </html>

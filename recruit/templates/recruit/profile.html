@@ -1,4 +1,4 @@
-<!doctype html>
+    <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,34 +29,74 @@
 <body>
 
 
+
+
+
+
+{% if user.type == 'PLAYER' %}
+
+
  <div class="row">
             <div class="col-md-2.5 offset-md-1">
-                <img class="card" height="500px" src="{{coach.image}}">
+                <img class="card" height="500px" src="{{user.playermore.image}}">
                 <br>
-                Contact Me:
-                <hr>
-                 <form method="POST">
-                    {%csrf_token%}
-                    {{ form.as_p}}
-                    <button type="submit" class = "btn btn-success">Send</button>
-                 </form>
+                <a href="{{user.playermore.id}}/print" class="btn btn-warning">Download Profile</a>
             </div>
             <div class="col-md-7 ">
-                <h1>{{coach.name}}</h1>
-                <h4>{{coach.school}}  --- {{ coach.state }}</h4>
-                <h4>{{coach.position}}</h4>
+                <h1>{{user.playermore.name}}</h1>
+                <h6>{{user.playermore.city}}, {{user.playermore.state}}</h6>
+                 <hr>
+                 <h6>Age: {{ user.playermore.age }} --- Graduation Year: {{user.playermore.gradyear}}</h6>
+                <h6>Position: {{user.playermore.position}}</h6>
+
+                <h6>School: {{user.playermore.school}} --- GPA: {{user.playermore.gpa}}</h6>
+                <h6>Club: {{user.playermore.club}}</h6>
+                <h6>Height: {{user.playermore.height}} --- Weight: {{user.playermore.weight}}</h6>
                 <hr>
-                <h6>Email: {{coach.email}}</h6>
-                <h6>Phone: {{coach.phone}}</h6>
+                <h6>Email: {{user.playermore.email}}</h6>
+                <h6>Phone: {{user.playermore.phone}}</h6>
+
+                <hr>
+                <h6>About Me:</h6>
+                {{user.playermore.summary}}
+                <br>
+                <br>
+                <h6>Experience:</h6>
+                {{user.playermore.skills}}
+                <hr>
+                </div>
+            </div>
+    </div>
+{% endif %}
+
+
+
+
+
+
+{% if user.type == 'COACH' %}
+    <div class="row">
+            <div class="col-md-2.5 offset-md-1">
+                <img class="card" height="500px" src="{{user.coachmore.image}}">
+            </div>
+            <div class="col-md-7 ">
+                <h1>{{user.coachmore.name}}</h1>
+                <h4>{{user.coachmore.school}}  --- {{ user.coachmore.state }}</h4>
+                <h4>{{user.coachmore.position}}</h4>
+                <hr>
+                <h6>Email: {{user.coachmore.email}}</h6>
+                <h6>Phone: {{user.coachmore.phone}}</h6>
                 <hr>
                 <h6>Experience:</h6>
-                {{coach.experience}}
-               <br>
+                {{user.coachmore.experience}}
+               <hr>
                 <h6>Team Requirements:</h6>
-                {{ coach.requirements }}
+                {{user.coachmore.requirements}}
 
 
             </div>
 </div>
+{% endif %}
+
 </body>
 </html>

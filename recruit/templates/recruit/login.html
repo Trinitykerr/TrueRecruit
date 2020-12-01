@@ -27,36 +27,34 @@
  </nav>
 </header>
 <body>
-
-
- <div class="row">
-            <div class="col-md-2.5 offset-md-1">
-                <img class="card" height="500px" src="{{coach.image}}">
-                <br>
-                Contact Me:
-                <hr>
-                 <form method="POST">
-                    {%csrf_token%}
-                    {{ form.as_p}}
-                    <button type="submit" class = "btn btn-success">Send</button>
-                 </form>
+<div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <div class="card-title">
+                            Login
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field.name }}
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn-info">Login</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-7 ">
-                <h1>{{coach.name}}</h1>
-                <h4>{{coach.school}}  --- {{ coach.state }}</h4>
-                <h4>{{coach.position}}</h4>
-                <hr>
-                <h6>Email: {{coach.email}}</h6>
-                <h6>Phone: {{coach.phone}}</h6>
-                <hr>
-                <h6>Experience:</h6>
-                {{coach.experience}}
-               <br>
-                <h6>Team Requirements:</h6>
-                {{ coach.requirements }}
+        </div>
+
+    </div>
 
 
-            </div>
 </div>
 </body>
 </html>
