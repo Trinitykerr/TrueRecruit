@@ -18,4 +18,5 @@ urlpatterns = [
     path('profile/', views.profilepage, name='profile'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.Logout, name='logout'),
+    path('profile/<int:id>/update', views.update_p, name="updateprofile"),
 ]

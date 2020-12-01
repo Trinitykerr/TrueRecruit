@@ -29,9 +29,7 @@ class CreatePlayer(forms.ModelForm):
 
 
 class CreateCoach(forms.ModelForm):
-    user = User.objects.last()
-    email = user.email
-    user = email
+    user = User.objects.latest('date_joined')
 
     class Meta:
         model = CoachMore
@@ -41,3 +39,4 @@ class CreateCoach(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
+

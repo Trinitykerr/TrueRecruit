@@ -181,3 +181,30 @@ class LoginView(FormView):
             messages.add_message(self.request, messages.INFO, 'Wrong credentials\
                                 please try again')
             return HttpResponseRedirect(reverse_lazy('custom_auth:login'))
+
+
+
+@login_required
+def update_p(request, id):
+
+    if User.type =="PLAYER":
+        profile = PlayerMore.objects.get(id=id)
+        form = CreatePlayer(request.POST or None, instance=profile)
+    else:
+        profile = CoachMore.objects.get(id=id)
+        form = CreateCoach(request.POST or None, instance=profile)
+
+    if form.is_valid():
+        form.save()
+        return redirect('recruit:profile')
+    return render(request, 'recruit/profileform.html', {'form':form, 'profile':profile})
+
+
+# def delete_p(request, id):
+#     portfolio = Portfolio.objects.get(id=id)
+#
+#     if request.method == 'POST':
+#         portfolio.delete()
+#         return redirect('PortfolioDatabase:portfolio')
+#
+#     return render(request, 'PortfolioDatabase/portfolio-delete.html', {'portfolio': portfolio})

@@ -136,8 +136,9 @@ class PlayerMore(models.Model):
 class CoachMore(models.Model):
     def __str__(self):
         return self.name
+    coach = User.objects.latest('date_joined')
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=coach)
     name = models.CharField(max_length=200)
     image = models.CharField(max_length=2000, default='https://st2.depositphotos.com/1338217/6803/v/950/depositphotos'
                                                       '_68039059-stock-illustration-soccer-coach-with-ball.jpg')
@@ -145,7 +146,7 @@ class CoachMore(models.Model):
     school = models.CharField(max_length=200)
     position = models.CharField(max_length=200)
     experience = models.TextField(max_length=2000)
-    email = models.CharField(max_length=200)
+    email = models.CharField(max_length=200 , default=coach)
     phone = models.CharField(max_length=200)
     requirements = models.TextField(max_length=2000)
 
