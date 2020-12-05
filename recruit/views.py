@@ -35,6 +35,7 @@ def registration_view(request):
             account = authenticate(email=email, password=raw_password)
             type1 = form.cleaned_data.get("type")
             login(request, account)
+
             if type1 == 'PLAYER':
                 return redirect('recruit:createplayer')
             else:
@@ -127,6 +128,7 @@ def createplayer(request):
             return redirect('recruit:coach_list')
 
     else:
+
         form = CreatePlayer()
         return render(request, 'recruit/createplayer.html', {'form':form})
 
@@ -143,6 +145,7 @@ def createcoach(request):
             return redirect('recruit:player_list')
 
     else:
+
         form = CreateCoach()
         return render(request, 'recruit/createcoach.html', {'form':form})
 
@@ -180,19 +183,21 @@ class LoginView(FormView):
         else:
             messages.add_message(self.request, messages.INFO, 'Wrong credentials\
                                 please try again')
-            return HttpResponseRedirect(reverse_lazy('custom_auth:login'))
+            return HttpResponseRedirect(reverse_lazy('recruit:login'))
 
 
 
 @login_required
 def update_p(request, id):
+    profile = User.objects.get(id=id)
+    email = profile.email
+    if profile.type == 'PLAYER':
+        user = PlayerMore.objects.get(email=email)
+        form = CreatePlayer(request.POST or None, instance=user)
 
-    if User.type =="PLAYER":
-        profile = PlayerMore.objects.get(id=id)
-        form = CreatePlayer(request.POST or None, instance=profile)
     else:
-        profile = CoachMore.objects.get(id=id)
-        form = CreateCoach(request.POST or None, instance=profile)
+        user= CoachMore.objects.get(email=email)
+        form = CreateCoach(request.POST or None, instance=user)
 
     if form.is_valid():
         form.save()
@@ -200,11 +205,11 @@ def update_p(request, id):
     return render(request, 'recruit/profileform.html', {'form':form, 'profile':profile})
 
 
-# def delete_p(request, id):
-#     portfolio = Portfolio.objects.get(id=id)
-#
-#     if request.method == 'POST':
-#         portfolio.delete()
-#         return redirect('PortfolioDatabase:portfolio')
-#
-#     return render(request, 'PortfolioDatabase/portfolio-delete.html', {'portfolio': portfolio})
+def delete_p(request, id):
+    profile = User.objects.get(id=id)
+
+    if request.method == 'POST':
+        profile.delete()
+        return redirect('recruit:home')
+
+    return render(request, 'recruit/profiledelete.html', {'profile': profile})

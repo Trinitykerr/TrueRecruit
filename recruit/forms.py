@@ -18,9 +18,7 @@ class ContactForm(forms.ModelForm):
 
 
 class CreatePlayer(forms.ModelForm):
-    user = User.objects.last()
-    email = user.email
-    user = email
+    user = User.objects.latest('date_joined')
 
     class Meta:
         model = PlayerMore

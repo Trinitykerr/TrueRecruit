@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Document</title>
+        <link rel="stylesheet" href="{% static 'food/style.css'%}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<body>
+<header style="padding-bottom: 20px">
+ <nav class = "navbar navbar-dark " style="padding-bottom: 20px; background: black;">
+    <a href="{% url 'recruit:home' %}"><h1 class="navbar-brand" style= font-size:3em;">TrueRecruit</h1></a>
+     <div class="navbar">
+                <a href="{% url 'recruit:home' %}" class="nav-item nav-link">Home</a>
+                 <a href="{% url 'recruit:player_list' %}" class="nav-item nav-link">Players</a>
+                 <a href="{% url 'recruit:coach_list' %}" class="nav-item nav-link">Coaches</a>
+                  {% if user.is_authenticated %}
+             <a class="nav-item nav-link" href="{% url 'recruit:profile' %}">Profile</a>
+                      <a class="nav-item nav-link" href="{% url 'recruit:logout' %}">Logout</a>
+        {% else %}
+              <a class="nav-item nav-link" href="{% url 'recruit:login' %}">Login</a>
+        {% endif %}
+
+    </div>
+ </nav>
+</header>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% block body %}
+
+{% endblock %}
+</body>
+</html>

@@ -111,8 +111,10 @@ class Player(User):
 class PlayerMore(models.Model):
     def __str__(self):
         return self.name
+    player = User.objects.latest('date_joined')
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=player)
     name = models.CharField(max_length=200)
     image = models.CharField(max_length=2000, default='https://ih1.redbubble.net/image.702995522.8412/flat,750x,'
                                                       '075,f-pad,750x1000,f8f8f8.jpg')
@@ -126,7 +128,7 @@ class PlayerMore(models.Model):
     gpa = models.CharField(max_length=200)
     height = models.CharField(max_length=200, default='')
     weight = models.CharField(max_length=200, default='')
-    email = models.CharField(max_length=200)
+    email = models.CharField(max_length=200, default=player)
     phone = models.CharField(max_length=200)
     summary = models.TextField(max_length=2000, default='')
     skills = models.TextField(max_length=2000, default='')

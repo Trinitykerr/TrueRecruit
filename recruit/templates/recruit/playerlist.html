@@ -28,6 +28,13 @@
         {% endif %}
     </div>
  </nav>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 </header>
 <body>
 {% for player_item in player_object %}

@@ -13,10 +13,11 @@ urlpatterns = [
     path('playerdetail/<int:pk>', views.PlayerDetail.as_view(), name="playerdetail"),
     path('coach/<int:id>', views.CoachDetail, name="coachdetail"),
     path('playerdetail/<int:id>/print', views.PlayerPrint, name='playerprint'),
-    path('register/createplayer', views.createplayer, name='createplayer'),
-    path('register/createcoach', views.createcoach, name='createcoach'),
+    path('register/createplayer/', views.createplayer, name='createplayer'),
+    path('register/createcoach/', views.createcoach, name='createcoach'),
     path('profile/', views.profilepage, name='profile'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.Logout, name='logout'),
     path('profile/<int:id>/update', views.update_p, name="updateprofile"),
+    path('profile/<int:id>/delete', views.delete_p, name="deleteprofile"),
 ]
