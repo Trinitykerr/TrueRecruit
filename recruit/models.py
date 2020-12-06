@@ -112,7 +112,8 @@ class PlayerMore(models.Model):
     def __str__(self):
         return self.name
     player = User.objects.latest('date_joined')
-
+    trial = User.objects.all().last()
+    email = trial.email
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=player)
     name = models.CharField(max_length=200)
