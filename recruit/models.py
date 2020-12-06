@@ -178,4 +178,4 @@ class Contact(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
     age = models.CharField(max_length=200)
-    message = models.CharField(max_length=1000)
+    message = models.TextField(max_length=1000)
