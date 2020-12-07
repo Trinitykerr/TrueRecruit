@@ -153,6 +153,8 @@ class CoachMore(models.Model):
     phone = models.CharField(max_length=200)
     requirements = models.TextField(max_length=2000)
 
+    readonly_fields = ["user", "email"]
+
 
 class Coach(User):
     base_type = User.Types.COACH

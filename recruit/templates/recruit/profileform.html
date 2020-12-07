@@ -3,7 +3,21 @@
 <div class="col-md-8 offset-md-2">
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+        {% if field.name == 'user' %}
+            <label>{{ field.name.as_hidden }}</label>
+            {{ field.as_hidden }}
+        {% elif field.name == 'email' %}
+            <label>{{ field.name.as_hidden }}</label>
+            {{ field.as_hidden }}
+        {% else %}
+            <div class="form-group">
+                {{ field.name }}
+                <br>
+                {{ field }}
+            </div>
+        {% endif %}
+    {% endfor %}
     <button type="submit" class="btn-success">Save</button>
 </form>
 </div>

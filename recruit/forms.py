@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User, Contact, PlayerMore, CoachMore
+from django.forms import widgets
 
 
 class RegistrationForm(UserCreationForm):
@@ -18,7 +19,7 @@ class ContactForm(forms.ModelForm):
 
 
 class CreatePlayer(forms.ModelForm):
-    user = User.objects.latest('date_joined')
+
 
     class Meta:
         model = PlayerMore
@@ -27,14 +28,18 @@ class CreatePlayer(forms.ModelForm):
 
 
 class CreateCoach(forms.ModelForm):
-    user = User.objects.latest('date_joined')
+
+
 
     class Meta:
         model = CoachMore
         fields = ['user', 'email', 'name', 'image','state', 'position', 'school', 'experience', 'requirements', 'phone']
+        readonly = ('user', 'email')
+
 
 
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
+
 

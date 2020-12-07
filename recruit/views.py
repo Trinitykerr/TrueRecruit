@@ -126,10 +126,14 @@ def createplayer(request):
             name = form.cleaned_data.get('name')
             messages.success(request, f'Welcome {name}! Your profile is created')
             return redirect('recruit:coach_list')
+        else:
+            return render(request, 'recruit/createplayer.html',
+                          {'form': form})
+
 
     else:
 
-        form = CreatePlayer()
+        form = CreatePlayer(initial={'user': request.user, 'email':request.user.email})
         return render(request, 'recruit/createplayer.html', {'form':form})
 
 
@@ -138,15 +142,21 @@ def createcoach(request):
 
     if request.method == 'POST':
         form = CreateCoach(request.POST)
+        form.user = request.user
+        form.email = request.user.email
         if form.is_valid():
             form.save()
             name = form.cleaned_data.get('name')
+
             messages.success(request, f'Welcome {name}! Your profile is created')
             return redirect('recruit:player_list')
+        else:
+            return render(request, 'recruit/createcoach.html',
+                          {'form': form})
 
     else:
 
-        form = CreateCoach()
+        form = CreateCoach(initial={'user': request.user, 'email':request.user.email})
         return render(request, 'recruit/createcoach.html', {'form':form})
 
 
@@ -193,11 +203,11 @@ def update_p(request, id):
     email = profile.email
     if profile.type == 'PLAYER':
         user = PlayerMore.objects.get(email=email)
-        form = CreatePlayer(request.POST or None, instance=user)
+        form = CreatePlayer(request.POST or None, instance=user, initial={'user': request.user, 'email':request.user.email})
 
     else:
         user= CoachMore.objects.get(email=email)
-        form = CreateCoach(request.POST or None, instance=user)
+        form = CreateCoach(request.POST or None, instance=user, initial={'user': request.user, 'email':request.user.email})
 
     if form.is_valid():
         form.save()
